@@ -4,7 +4,7 @@ function authorize(todosListType: string) {
   cy.intercept(
       'GET',
       getUserEndpoint,
-      { fixture: todosListType }
+      { fixture: "user.response.json" }
   ).as('authorize');
 
   cy.intercept(
@@ -62,6 +62,7 @@ describe('Manage Todos', () => {
       authorize('one-todo-item.response.json');
 
       cy.fixture('todo-item.response.json').then((todoItemResponse) => {
+        let todoID = todoItemResponse['id'];
         cy.intercept(
             'DELETE',
             todosEndpoint,
@@ -70,8 +71,7 @@ describe('Manage Todos', () => {
               req.reply({
                 statusCode: 200,
                 body: JSON.stringify({
-                  ...todoItemResponse,
-                  text: body.text
+                  id: todoID
                 })
               });
             }
