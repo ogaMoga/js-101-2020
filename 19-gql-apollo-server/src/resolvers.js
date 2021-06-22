@@ -49,7 +49,17 @@ const resolvers = {
       };
       libraries.push(newLibrary);
       return libraries;
+    },
+
+    changeBookName(_, {bookId, newTitle}) {
+      let book = books.find(books => books.id === bookId);
+      if (!book) {
+        throw new Error("such Book does not exist");
+      }
+      book.title = newTitle;
+      return book;
     }
+
   }
 };
 
